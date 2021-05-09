@@ -7,9 +7,8 @@ const dishes = require(path.resolve("src/data/dishes-data"));
 const nextId = require("../utils/nextId");
 
 // TODO: Implement the /dishes handlers needed to make the tests pass
-function isProperPostBody(req, res, next) {
-  console.log(req.body);
-  const { data:{name, description, price, image_url = {}} } = req.body;
+function isProperDish(req, res, next) {
+  const { data: { name, description, price, image_url } = {} } = req.body;
   if (!name || name === "") {
     next({ status: 400, message: "Dish must include a name" });
   } else if (!description || description == "") {
@@ -32,30 +31,34 @@ function isProperPostBody(req, res, next) {
   }
 }
 
+
 function dishExists(req, res, next) {
   const { dishId } = req.params;
-  const dish =  dishes.find((dish, index) => {
+  const dish = dishes.find((dish, index) => {
     if (dish.id === dishId) {
-      res.locals.foundDishIndex = index
-      return dish 
+      res.locals.foundDishIndex = index;
+      return dish;
     }
   });
-  res.locals.dish = dish
 
-  next()
+  if (!dish) {
+    next({ status: 404, message: `dish ${dishId} does not exist` });
+  } else {
+    res.locals.dish = dish;
+    next();
+  }
 }
 
 function read(req, res, next) {
-  if (res.locals.dish){
-    res.status(200).json({data: res.locals.dish})
-  } else{
+  if (res.locals.dish) {
+    res.status(200).json({ data: res.locals.dish });
+  } else {
     next({ status: 404 });
   }
 }
 
 function create(req, res, next) {
   const newId = nextId();
-  console.log(newId);
   const newDish = {
     id: newId,
     name: res.locals.name,
@@ -64,36 +67,44 @@ function create(req, res, next) {
     image_url: res.locals.image_url,
   };
   dishes.push(newDish);
-  console.log(newDish);
-  res.status(201).json({data: newDish});
+  res.status(201).json({ data: newDish });
 }
 
 function list(req, res, next) {
-  console.log("list");
   res.status(200).json({ data: dishes });
 }
 
-function update(req, res, next ){
-  const {dishId} = req.params
-    if (res.locals.dish){
-        const newDish = dishes.find((dish) => {
-            if(dish.id === dishId){
-              dish.name = res.locals.name
-              dish.description = res.locals.description
-              dish.price = res.locals.price 
-              dish.image_url = res.locals.image_url
-            }
-            return dish
-          })
-          res.status(201).json({data:newDish})
-    } else{
-        next({status:404})
+function update(req, res, next) {
+  const { dishId } = req.params;
+  const {
+    data: { id },
+  } = req.body;
+  if (id) {
+    console.log(id, dishId, typeof id, typeof dishId)
+    if (id !== dishId) {
+     return next({ status: 400, message: `Url id ${dishId} does not match request body id ${id}.` });
     }
+  } 
+
+  if (res.locals.dish) {
+    const newDish = dishes.find((dish) => {
+      if (dish.id === dishId) {
+        dish.name = res.locals.name;
+        dish.description = res.locals.description;
+        dish.price = res.locals.price;
+        dish.image_url = res.locals.image_url;
+      }
+      return dish;
+    });
+    res.status(200).json({ data: newDish });
+  } else {
+    next({ status: 404 });
+  }
 }
 
 module.exports = {
   list,
-  create: [isProperPostBody, create],
+  create: [isProperDish, create],
   read: [dishExists, read],
-  update:[dishExists, isProperPostBody, update]
+  update: [dishExists, isProperDish, update],
 };

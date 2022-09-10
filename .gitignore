@@ -1,4 +1,4 @@
 node_modules
 .qualified-attach.json
 .attachignore
-.vercel
+._vercel

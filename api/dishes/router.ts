@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const methodNotAllowed = require("../errors/methodNotAllowed");
-const controller = require("./dishes.controller");
+import methodNotAllowed from "../../src/errors/methodNotAllowed";
+import controller from "./controller";
 
 // TODO: Implement the /dishes routes needed to make the tests pass
 

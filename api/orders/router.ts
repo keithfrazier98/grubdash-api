@@ -1,6 +1,7 @@
-const router = require("express").Router();
-const methodNotAllowed = require("../errors/methodNotAllowed");
-const controller = require("./orders.controller")
+import express from "express";
+const router = express.Router()
+import methodNotAllowed from "../../src/errors/methodNotAllowed";
+import controller from "./controller";
 
 // TODO: Implement the /orders routes needed to make the tests pass
 

@@ -1,10 +1,10 @@
-const path = require("path");
+import path from "path";
 
 // Use the existing order data
 const orders = require(path.resolve("src/data/orders-data"));
 
 // Use this function to assigh ID's when necessary
-const nextId = require("../utils/nextId");
+import nextId from "../../src/utils/nextId";
 
 // TODO: Implement the /orders handlers needed to make the tests pass
 
@@ -21,7 +21,7 @@ function orderExists(req, res, next) {
 
 function hasProperOrder(req, res, next) {
   const {
-    data: { deliverTo, mobileNumber, status, dishes, id } = {},
+    data: { deliverTo, mobileNumber, status, dishes, id },
   } = req.body;
   const { orderId } = req.params;
   const validStatus = ["pending", "delivered", "preparing", "out-for-delivery"];
@@ -29,8 +29,7 @@ function hasProperOrder(req, res, next) {
     if (!status || status === "" || !validStatus.includes(status)) {
       next({
         status: 400,
-        message:
-          "Order must have a status of pending, preparing, out-for-delivery, delivered",
+        message: "Order must have a status of pending, preparing, out-for-delivery, delivered",
       });
     } else if (status === "delivered") {
       next({ status: 400, message: "A delivered order cannot be changed" });
@@ -110,7 +109,7 @@ function create(req, res, next) {
 }
 
 function update(req, res, next) {
-    const { orderId } = req.params;
+  const { orderId } = req.params;
   const newOrder = orders.find((order) => {
     if ((order.id = orderId)) {
       (order.id = orderId),
@@ -134,7 +133,7 @@ function read(req, res, next) {
   res.status(200).json({ data: res.locals.order });
 }
 
-module.exports = {
+export default {
   list,
   read: [orderExists, read],
   create: [hasProperOrder, create],

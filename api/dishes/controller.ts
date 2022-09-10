@@ -1,14 +1,14 @@
-const path = require("path");
+import path from "path";
 
 // Use the existing dishes data
-const dishes = require(path.resolve("src/data/dishes-data"));
+import dishes from '../../src/data/dishes-data' ;
 
 // Use this function to assign ID's when necessary
-const nextId = require("../utils/nextId");
+import nextId from "../../src/utils/nextId";
 
 // TODO: Implement the /dishes handlers needed to make the tests pass
 function isProperDish(req, res, next) {
-  const { data: { name, description, price, image_url } = {} } = req.body;
+  const { data: { name, description, price, image_url } } = req.body;
   if (!name || name === "") {
     next({ status: 400, message: "Dish must include a name" });
   } else if (!description || description == "") {
@@ -102,7 +102,7 @@ function update(req, res, next) {
   }
 }
 
-module.exports = {
+export default {
   list,
   create: [isProperDish, create],
   read: [dishExists, read],

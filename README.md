@@ -1,6 +1,6 @@
 # grubDash
 
-> front end repository: https://github.com/keithfrazier98/starter-grub-dash-front-end
+> front end repository: https://github.com/keithfrazier98/grubdash
 
 This is the API for the grubDash repository, responsible for requests made to handle orders and dishes.
 

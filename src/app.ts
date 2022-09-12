@@ -1,10 +1,10 @@
-const express = require("express");
-const cors = require("cors");
+import express from "express";
+import cors from "cors";
 
-const errorHandler = require("./errors/errorHandler");
-const notFound = require("./errors/notFound");
-const ordersRouter = require("./orders/orders.router");
-const dishesRouter = require("./dishes/dishes.router");
+import errorHandler from "./errors/errorHandler";
+import notFound from "./errors/notFound";
+import ordersRouter from "../api/orders/router";
+import dishesRouter from "../api/dishes/router";
 
 const app = express();
 
@@ -20,4 +20,4 @@ app.use(notFound);
 
 app.use(errorHandler);
 
-module.exports = app;
+export default app;

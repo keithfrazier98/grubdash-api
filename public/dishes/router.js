@@ -9,5 +9,5 @@ var controller_1 = __importDefault(require("./controller"));
 // TODO: Implement the /dishes routes needed to make the tests pass
 router.route("/").get(controller_1.default.list).post(controller_1.default.create).all(methodNotAllowed_1.default);
 router.route("/:dishId").get(controller_1.default.read).put(controller_1.default.update).all(methodNotAllowed_1.default);
-module.exports = router;
+exports.default = router;
 //# sourceMappingURL=router.js.map

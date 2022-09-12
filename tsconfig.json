@@ -13,10 +13,10 @@
       "target": "es5",
       "typeRoots": ["../node_modules/@types"],
       "outDir": "public",
-      "resolveJsonModule": true
+      "resolveJsonModule": true,
     },
     "assets": ["**/*.crt"],
-    "include": ["api/**/*.ts", "api/**/*.json", "index.ts"],
+    "include": ["api/**/*.ts", "api/**/*.json", "index.ts", "src/*"],
     "exclude": ["node_modules", "api/**/*.spec.ts"],
     "compileOnSave": false
   }
